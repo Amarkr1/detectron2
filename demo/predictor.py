@@ -100,6 +100,7 @@ class VisualizationDemo(object):
                 vis_frame = video_visualizer.draw_sem_seg(
                     frame, predictions["sem_seg"].argmax(dim=0).to(self.cpu_device)
                 )
+                print("Prediction: ", predictions["sem_seg"].argmax(dim=0).to(self.cpu_device))
 
             # Converts Matplotlib RGB format to OpenCV BGR format
             vis_frame = cv2.cvtColor(vis_frame.get_image(), cv2.COLOR_RGB2BGR)
