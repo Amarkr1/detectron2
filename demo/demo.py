@@ -131,6 +131,7 @@ if __name__ == "__main__":
         frames_per_second = video.get(cv2.CAP_PROP_FPS)
         num_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
         basename = os.path.basename(args.video_input)
+        print("frames per sec:", frames_per_second)
 
         if args.output:
             if os.path.isdir(args.output):
