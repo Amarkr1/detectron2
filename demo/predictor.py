@@ -84,6 +84,7 @@ class VisualizationDemo(object):
         Yields:
             ndarray: BGR visualizations of each video frame.
         """
+        print("in function run on video")
         video_visualizer = VideoVisualizer(self.metadata, self.instance_mode)
 
         def process_predictions(frame, predictions):
@@ -93,6 +94,7 @@ class VisualizationDemo(object):
                 vis_frame = video_visualizer.draw_panoptic_seg_predictions(
                     frame, panoptic_seg.to(self.cpu_device), segments_info
                 )
+                print("In panoptic seg:",segments_info)
             elif "instances" in predictions:
                 predictions = predictions["instances"].to(self.cpu_device)
                 vis_frame = video_visualizer.draw_instance_predictions(frame, predictions)
@@ -128,6 +130,7 @@ class VisualizationDemo(object):
         else:
             for frame in frame_gen:
                 yield process_predictions(frame, self.predictor(frame))
+                #print("prediction else:",self.predictor(frame))
 
 
 class AsyncPredictor:
