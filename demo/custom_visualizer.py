@@ -9,7 +9,7 @@ from detectron2.utils.visualizer import (
     _PanopticPrediction,
 )
 
-from .colormap import random_color
+from colormap import random_color
 
 
 class _DetectedInstance:
