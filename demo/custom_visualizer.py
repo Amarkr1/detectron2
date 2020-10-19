@@ -72,6 +72,7 @@ class VideoVisualizer:
         scores = predictions.scores if predictions.has("scores") else None
         classes = predictions.pred_classes.numpy() if predictions.has("pred_classes") else None
         keypoints = predictions.pred_keypoints if predictions.has("pred_keypoints") else None
+        #print('Boxes are:',boxes)
 
         if predictions.has("pred_masks"):
             masks = predictions.pred_masks
@@ -109,6 +110,19 @@ class VideoVisualizer:
         )
 
         return frame_visualizer.output
+
+    def get_video_labels(self,frame,predictions):
+        frame_visualizer = Visualizer(frame, self.metadata)
+        num_instances = len(predictions)
+        if num_instances == 0:
+            return ""
+        boxes = predictions.pred_boxes.tensor.numpy() if predictions.has("pred_boxes") else None
+        scores = predictions.scores if predictions.has("scores") else None
+        classes = predictions.pred_classes.numpy() if predictions.has("pred_classes") else None
+        keypoints = predictions.pred_keypoints if predictions.has("pred_keypoints") else None
+        labels = _create_text_labels(classes, scores, self.metadata.get("thing_classes", None))
+        #print("labels in get video labels:", labels)
+        return labels
 
     def draw_sem_seg(self, frame, sem_seg, area_threshold=None):
         """

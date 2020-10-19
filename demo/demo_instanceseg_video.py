@@ -153,18 +153,18 @@ if __name__ == "__main__":
         assert os.path.isfile(args.video_input)
         files = open('result.csv', 'w')
         writer = csv.writer(files)
-        writer.writerow(["Frame number","Attribute","Values"])
+        writer.writerow(["Frame number","Attribute","Values","Label"])
         i=0
-        for vis_frame,prediction in tqdm.tqdm(demo.run_on_video(video), total=num_frames):
+        for vis_frame,prediction,labels in tqdm.tqdm(demo.run_on_video(video), total=num_frames):
             dnary = prediction.__dict__
             new_dnary = dnary['_fields']
             j=0
             for key,value in new_dnary.items():
                 if j==0:
-                    line = [i,key,value]
+                    line = [i,key,value,labels]
                     j=1
                 else:
-                    line = ['',key,value]
+                    line = ['',key,value,'']
                 writer.writerow(line)
             i=i+1
             #print('keys:',dnary.keys())
@@ -185,4 +185,3 @@ if __name__ == "__main__":
             files.close()
         else:
             cv2.destroyAllWindows()
-
