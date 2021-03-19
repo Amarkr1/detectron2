@@ -13,7 +13,7 @@ from detectron2.utils.visualizer import ColorMode, Visualizer
 
 
 class VisualizationDemo(object):
-    def __init__(self, cfg, instance_mode=ColorMode.IMAGE, parallel=False):
+    def __init__(self, cfg, classes, instance_mode=ColorMode.IMAGE, parallel=False):
         """
         Args:
             cfg (CfgNode):
@@ -22,8 +22,13 @@ class VisualizationDemo(object):
                 Useful since the visualization logic can be slow.
         """
         self.metadata = MetadataCatalog.get(
-            cfg.DATASETS.TEST[0] if len(cfg.DATASETS.TEST) else "__unused"
+            cfg.DATASETS.TRAIN[0] if len(cfg.DATASETS.TRAIN) else "__unused"
         )
+        # custom specifying target custom classes
+        self.metadata = MetadataCatalog.get(cfg.DATASETS.TRAIN[0]).set(thing_classes=classes)
+        print(classes)
+
+
         self.cpu_device = torch.device("cpu")
         self.instance_mode = instance_mode
 
@@ -86,6 +91,8 @@ class VisualizationDemo(object):
         """
         #print("in function run on video")
         video_visualizer = VideoVisualizer(self.metadata, self.instance_mode)
+        print("#################")
+        print(self.metadata)
 
         def process_predictions(frame, predictions):
             frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
