@@ -68,6 +68,11 @@ def get_parser():
         default=[],
         nargs=argparse.REMAINDER,
     )
+    parser.add_argument(
+        "--classes",
+        help="Add target classes",
+        nargs='+',
+    )
     return parser
 
 
@@ -80,7 +85,7 @@ if __name__ == "__main__":
 
     cfg = setup_cfg(args)
 
-    demo = VisualizationDemo(cfg)
+    demo = VisualizationDemo(cfg, args.classes)
 
     if args.input:
         if len(args.input) == 1:
